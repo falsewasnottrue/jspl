@@ -2,10 +2,7 @@ function arrToList(arr) {
 	if (arr.length == 0) {
 		return null;
 	} else {
-		return {
-			value: arr[0],
-			rest: arrToList(arr.slice(1))
-		}
+		return prepend(arr[0], arrToList(arr.slice(1)));
 	}
 }
 
@@ -27,6 +24,13 @@ function nth(n, l) {
 	} else {
 		return nth(n-1, l.rest);
 	}
+}
+
+function prepend(v, l) {
+	return {
+		value: v,
+		rest: l
+	};
 }
 
 var arr = [1,2,3];
