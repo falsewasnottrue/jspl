@@ -9,5 +9,20 @@ function arrToList(arr) {
 	}
 }
 
+function listToArray(l) {
+	if (l == null) {
+		return [];
+	} else {
+		var res = listToArray(l.rest);
+		res.unshift(l.value);
+		return res;
+	}
+}
+
 var arr = [1,2,3];
-console.log(arrToList(arr));
+
+var l = arrToList(arr);
+console.log(l);
+
+var arr2 = listToArray(l);
+console.log(arr2);
