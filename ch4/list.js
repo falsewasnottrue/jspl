@@ -19,10 +19,23 @@ function listToArray(l) {
 	}
 }
 
+function nth(n, l) {
+	if (l == null) {
+		return undefined;
+	} else if (n == 0) {
+		return l.value;
+	} else {
+		return nth(n-1, l.rest);
+	}
+}
+
 var arr = [1,2,3];
 
 var l = arrToList(arr);
 console.log(l);
+
+console.log(nth(1, l));
+console.log(nth(5, l));
 
 var arr2 = listToArray(l);
 console.log(arr2);
