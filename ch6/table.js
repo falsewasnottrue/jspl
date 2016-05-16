@@ -7,9 +7,9 @@ function rowHeights(rows) {
 }
 
 function colWidths(rows) {
-	return rows.map(function(_, i) {
-		return rows.reduce(function(max, row) {
-			return Math.max(max, row[i].minWidth())
+	return rows[0].map(function(_, i) {
+  	return rows.reduce(function(max, row) {
+  		return Math.max(max, row[i].minWidth())
 		}, 0);
 	});
 }
@@ -64,16 +64,41 @@ TextCell.prototype.draw = function(width, height) {
 	return result;
 }
 
-var rows = [];
-for (var i = 0; i < 5; i++) {
-	var row = [];
-	for (var j = 0; j < 5; j++) {
-		if ((j+i) % 2 == 0)
-			row.push(new TextCell("##"))
-		else
-			row.push(new TextCell("  "))
-	}
-	rows.push(row);
+function UnderlinedCell(inner) {
+	this.inner = inner;
+}
+UnderlinedCell.prototype.minWidth = function() {
+	return this.inner.minWidth();
+}
+UnderlinedCell.prototype.minHeight = function() {
+	return this.inner.minHeight() + 1;
+}
+UnderlinedCell.prototype.draw = function(width, height) {
+	return this.inner.draw(width, height - 1).concat([repeat("-", width)]);
 }
 
-console.log(drawTable(rows));
+var MOUNTAINS = [
+  {name: "Kilimanjaro", height: 5895, country: "Tanzania"},
+  {name: "Everest", height: 8848, country: "Nepal"},
+  {name: "Mount Fuji", height: 3776, country: "Japan"},
+  {name: "Mont Blanc", height: 4808, country: "Italy/France"},
+  {name: "Vaalserberg", height: 323, country: "Netherlands"},
+  {name: "Denali", height: 6168, country: "United States"},
+  {name: "Popocatepetl", height: 5465, country: "Mexico"}
+];
+
+function dataTable(data) {
+	var keys = Object.keys(data[0]);
+	var headers = keys.map(function(name) {
+		return new UnderlinedCell(new TextCell(name));
+	});
+	var body = data.map(function(row) {
+		return keys.map(function(name) {
+			return new TextCell(String(row[name]));
+		});
+	});
+
+	return [headers].concat(body);
+}
+console.log(dataTable(MOUNTAINS));
+console.log(drawTable(dataTable(MOUNTAINS)));
