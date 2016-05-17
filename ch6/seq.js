@@ -2,7 +2,6 @@
 // hasNext(): Boolean
 // next(): T
 
-// TODO ArraySeq
 function ArraySeq(array) {
 	this.array = array;
 	this.pos = 0;
@@ -24,4 +23,22 @@ for (var i=0; i<5; i++) {
 	}
 }
 
-// TODO RangeSeq
+function RangeSeq(start, end) {
+	this.pos = start
+	this.end = end
+}
+
+RangeSeq.prototype.hasNext = function() {
+	return this.pos < this.end
+}
+RangeSeq.prototype.next = function() {
+	return this.pos ++
+}
+
+var rangeSeq = new RangeSeq(5,100)
+
+for (var i=0; i<5; i++) {
+	if (rangeSeq.hasNext()) {
+		console.log(rangeSeq.next())
+	}
+}
