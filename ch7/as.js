@@ -1,6 +1,19 @@
 // artificial stupidity
 "use strict";
 
+var plan = ["############################",
+            "#      #    #      o      ##",
+            "#                          #",
+            "#          #####           #",
+            "##         #   #    ##     #",
+            "###           ##     #     #",
+            "#           ###      #     #",
+            "#   ####                   #",
+            "#   ##       o             #",
+            "# o  #         o       ### #",
+            "#    #                     #",
+            "############################"];
+
 function Vector(x,y) {
 	this.x = x;
 	this.y = y;
@@ -27,6 +40,20 @@ console.log(grid.get(pos))
 grid.set(pos, 10)
 console.log(grid.get(pos))
 
+function Wall() {}
+function Critter() {}
 
-// TODO World (grid, turn)
+function World(plan, legend) {
+	this.grid = new Grid(plan[0].length, plan.length);
+}
+
+World.prototype.toString = function() {
+	return "TODO"
+}
+
+var world = new World(plan, [{"#": Wall}, {"O": Critter}])
+console.log(world);
+
 // TODO Critter
+
+
