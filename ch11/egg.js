@@ -50,4 +50,28 @@ function parse(program) {
 	return result.expr;
 }
 
-console.log(parse("+(a,10)"));
+var operators = {};
+operators["+"] = function(a,b) {
+	return a+b;
+}
+
+function evaluate(expr, env) {
+	if (expr.type === "value") {
+		return expr.value;
+	} else if (expr.type === "word") {
+		return env[expr.value]
+	} else if (expr.type === "apply") {
+		console.log(expr.operator);
+		var op = operators[expr.operator.word];
+		var args = expr.args.map(function(a) { return evaluate(a, env); })
+		return op.apply(null, args);
+	} else {
+		throw new SyntaxError("Unexpected expression type: " + expr.type);
+	}
+}
+
+var p = parse("+(a,10)");
+console.log(p);
+
+var env = {};
+var result = evaluate(p, env);
