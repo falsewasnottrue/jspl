@@ -62,8 +62,10 @@ function evaluate(expr, env) {
 		return env[expr.value]
 	} else if (expr.type === "apply") {
 		console.log(expr.operator);
-		var op = operators[expr.operator.word];
+		var op = operators[expr.operator.value];
+    console.log(op);
 		var args = expr.args.map(function(a) { return evaluate(a, env); })
+    console.log(args);
 		return op.apply(null, args);
 	} else {
 		throw new SyntaxError("Unexpected expression type: " + expr.type);
@@ -73,5 +75,6 @@ function evaluate(expr, env) {
 var p = parse("+(a,10)");
 console.log(p);
 
-var env = {};
+var env = {a: 1};
 var result = evaluate(p, env);
+console.log(result);
