@@ -50,10 +50,13 @@ function parse(program) {
 	return result.expr;
 }
 
-var operators = {};
-operators["+"] = function(a,b) {
-	return a+b;
-}
+var topEnv = Object.create(null);
+topEnv[true] = true;
+topEnv[false] = false;
+
+["+", "-", "*", "/", "%", "==", "<", ">"].forEach(function(op) {
+	topEnv[op] = new Function("a,b", "return a " + op + "b");
+});
 
 function evaluate(expr, env) {
 	if (expr.type === "value") {
@@ -61,20 +64,18 @@ function evaluate(expr, env) {
 	} else if (expr.type === "word") {
 		return env[expr.value]
 	} else if (expr.type === "apply") {
-		console.log(expr.operator);
-		var op = operators[expr.operator.value];
-    console.log(op);
+		var op = env[expr.operator.value];
 		var args = expr.args.map(function(a) { return evaluate(a, env); })
-    console.log(args);
 		return op.apply(null, args);
 	} else {
 		throw new SyntaxError("Unexpected expression type: " + expr.type);
 	}
 }
 
+
 var p = parse("+(a,10)");
 console.log(p);
 
-var env = {a: 1};
-var result = evaluate(p, env);
+topEnv["a"] = 1;
+var result = evaluate(p, topEnv);
 console.log(result);
