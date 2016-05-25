@@ -104,6 +104,12 @@ specialFunctions["define"] = function(args, env) {
 	env[args[0].value] = evaluate(args[1], env);
 }
 
+specialFunctions["print"] = function(args, env) {
+	args.forEach(function(arg) {
+		console.log(evaluate(arg, env));
+	});
+}
+
 // TODO functions
 
 function evaluate(expr, env) {
@@ -132,5 +138,17 @@ function run(text) {
 	return result;
 }
 
-var result = run("do(define(a,1),if(true,a,2))");
-console.log(result);
+var text = "do("
+			+ "define(total,0),"
+			+ "define(a,1),"
+			+ "while("
+				+ "<(a,11),"
+				+ "do (" 
+					+ "define(total, +(total, a)),"
+					+ "define(a, +(a, 1))"
+				+ ")"
+			+ "),"
+			+ "print(total)"
+		+ ")"
+
+run(text);
