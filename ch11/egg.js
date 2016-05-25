@@ -71,6 +71,21 @@ specialFunctions["if"] = function(args, env) {
 	}
 };
 
+specialFunctions["while"] = function(args, env) {
+	if (args.length != 2) {
+		throw new SyntaxError("while has wrong number of arguments");
+	}
+
+	while (evaluate(args[0], env)) {
+		evaluate(args[1], env);
+	}
+	return false;
+}
+
+// TODO do
+// TODO define
+// TODO functions
+
 function evaluate(expr, env) {
 	if (expr.type === "value") {
 		return expr.value;
@@ -89,7 +104,8 @@ function evaluate(expr, env) {
 	}
 }
 
-var p = parse("if(false,1,2)");
+// TODO program to sum
+var p = parse("if(false,1,while(false,1))");
 topEnv["a"] = 1;
 var result = evaluate(p, topEnv);
 console.log(result);
