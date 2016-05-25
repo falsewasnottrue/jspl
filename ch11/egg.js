@@ -76,14 +76,34 @@ specialFunctions["while"] = function(args, env) {
 		throw new SyntaxError("while has wrong number of arguments");
 	}
 
+	var value;
 	while (evaluate(args[0], env)) {
-		evaluate(args[1], env);
+		value = evaluate(args[1], env);
 	}
-	return false;
+	return value;
 }
 
-// TODO do
-// TODO define
+specialFunctions["do"] = function(args, env) {
+	var value;
+	args.forEach(function(arg) {
+		value = evaluate(arg, env);
+	});
+
+	return value;
+}
+
+specialFunctions["define"] = function(args, env) {
+	if (args.length != 2) {
+		throw new SyntaxError("define has wrong number of arguments");
+	}
+
+	if (args[0].type !== "word") {
+		throw new SyntaxError("lefthand-side of define must be a variable");
+	}
+
+	env[args[0].value] = evaluate(args[1], env);
+}
+
 // TODO functions
 
 function evaluate(expr, env) {
@@ -104,8 +124,13 @@ function evaluate(expr, env) {
 	}
 }
 
-// TODO program to sum
-var p = parse("if(false,1,while(false,1))");
-topEnv["a"] = 1;
-var result = evaluate(p, topEnv);
+function run(text) {
+	var code = parse(text);
+	var env = Object.create(topEnv);
+	var result = evaluate(code, env);
+
+	return result;
+}
+
+var result = run("do(define(a,1),if(true,a,2))");
 console.log(result);
