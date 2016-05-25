@@ -58,24 +58,38 @@ topEnv[false] = false;
 	topEnv[op] = new Function("a,b", "return a " + op + "b");
 });
 
+var specialFunctions = {};
+specialFunctions["if"] = function(args, env) {
+	if (args.length != 3) {
+		throw new SyntaxError("if has wrong number of arguments");
+	}
+
+	if (evaluate(args[0], env)) {
+		return evaluate(args[1], env);
+	} else {
+		return evaluate(args[2], env);
+	}
+};
+
 function evaluate(expr, env) {
 	if (expr.type === "value") {
 		return expr.value;
 	} else if (expr.type === "word") {
 		return env[expr.value]
 	} else if (expr.type === "apply") {
-		var op = env[expr.operator.value];
-		var args = expr.args.map(function(a) { return evaluate(a, env); })
-		return op.apply(null, args);
+		if (expr.operator.value in specialFunctions) {
+			return specialFunctions[expr.operator.value](expr.args, env);
+		} else {
+			var op = env[expr.operator.value];
+			var args = expr.args.map(function(a) { return evaluate(a, env); })
+			return op.apply(null, args);
+		}
 	} else {
 		throw new SyntaxError("Unexpected expression type: " + expr.type);
 	}
 }
 
-
-var p = parse("+(a,10)");
-console.log(p);
-
+var p = parse("if(false,1,2)");
 topEnv["a"] = 1;
 var result = evaluate(p, topEnv);
 console.log(result);
