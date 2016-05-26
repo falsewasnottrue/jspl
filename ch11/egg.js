@@ -110,7 +110,27 @@ specialFunctions["print"] = function(args, env) {
 	});
 }
 
-// TODO functions
+
+specialFunctions["fun"] = function(args, env) {
+	if (args.length < 1) {
+		throw new SyntaxError("function must have a body")
+	}
+
+	var argNames = args.slice(0, args.length-1);
+	var body = args[args.length-1];
+
+	return function() {
+		if (arguments.length != argNames.length) {
+			throw new SyntaxError("wrong number of arguments");
+		}
+
+		var localEnv = Object.create(env);
+		for (var i=0; i<argNames.length; i++) {
+			localEnv[argNames[i].value] = arguments[i]
+		};
+		return evaluate(body, localEnv);
+	};
+}
 
 function evaluate(expr, env) {
 	if (expr.type === "value") {
@@ -151,4 +171,9 @@ var text = "do("
 			+ "print(total)"
 		+ ")"
 
-run(text);
+var text2 = "do(" 
+				+ "define(addOne, fun(a, +(a,1))),"
+				+ "define(b, addOne(1)),"
+				+ "print(b)"
+			+ ")"
+run(text2);
