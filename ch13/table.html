@@ -1,0 +1,46 @@
+<!doctype HTML>
+<html>
+	<header><title>Table</title></header>
+	<body>
+	<div id="tableDiv"></div>
+	<script type="text/javascript">
+		var MOUNTAINS = [
+		  {name: "Kilimanjaro", height: 5895, country: "Tanzania"},
+		  {name: "Everest", height: 8848, country: "Nepal"},
+		  {name: "Mount Fuji", height: 3776, country: "Japan"},
+		  {name: "Mont Blanc", height: 4808, country: "Italy/France"},
+		  {name: "Vaalserberg", height: 323, country: "Netherlands"},
+		  {name: "Denali", height: 6168, country: "United States"},
+		  {name: "Popocatepetl", height: 5465, country: "Mexico"}
+		];
+		
+		function makeChild(type, father) {
+			var child = document.createElement(type);
+			father.appendChild(child);
+			return child;
+		}
+
+		function createTable(data, id) {
+			var attributeNames = Object.getOwnPropertyNames(data[0]);
+			var content = document.getElementById(id);
+
+			var table = makeChild("table", content);
+			var th = makeChild("th", table);
+			for (var i=0; i<attributeNames.length; i++) {
+				var td = makeChild("td", th);
+				td.textContent = attributeNames[i];
+			}
+
+			for (var i=0; i<data.length; i++) {
+				var tr = makeChild("tr", th);
+				for (var j=0; j<attributeNames.length; j++) {
+					var td = makeChild("td", tr);
+					td.textContent = data[i][attributeNames[j]];
+				}
+			}
+		}
+
+		createTable(MOUNTAINS, "tableDiv");
+	</script>
+	<body>
+</html>
