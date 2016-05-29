@@ -27,3 +27,15 @@ function Level(plan) {
 	})[0];
 	this.status = this.finishDelay = null;
 }
+
+var simpleLevelPlan = [
+	"                         ",
+	"                         ",
+	"  x                 =x   ",
+	"  x           o  o   x   ",
+	"  x @        xxxxxx  x   ",
+	"  xxxxxx             x   ",
+	"       x!!!!!!!!!!!!!x   ",
+	"       xxxxxxxxxxxxxxx   ",
+	"                         "	
+];
