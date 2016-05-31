@@ -28,6 +28,7 @@ function Level(plan) {
 	this.status = this.finishDelay = null;
 };
 Level.prototype.obstacleAt = function(pos, size) {
+	// console.log("obstacleAt " + pos + " : " + size);
 	var xStart = Math.floor(pos.x);
 	var xEnd = Math.ceil(pos.x + size.x);
 	var yStart = Math.floor(pos.y);
@@ -47,16 +48,16 @@ Level.prototype.obstacleAt = function(pos, size) {
 	}
 }
 Level.prototype.actorAt = function(actor) {
-	for (var i=0; i<this.actors.length; i++) {
-		var other = this.actors[i];
-		if (other != actor &&
-			actor.pos.x + actor.size.x > other.pos.x &&
-			actor.pos.x < other.pos.x - other.size.x &&
-			actor.pos.y + actor.size.y > other.pos.y &&
-			actor.pos.x < other.pos.y - other.size.y)
-			return other;
-	}
-}
+  for (var i = 0; i < this.actors.length; i++) {
+    var other = this.actors[i];
+    if (other != actor &&
+        actor.pos.x + actor.size.x > other.pos.x &&
+        actor.pos.x < other.pos.x + other.size.x &&
+        actor.pos.y + actor.size.y > other.pos.y &&
+        actor.pos.y < other.pos.y + other.size.y)
+      return other;
+  }
+};
 var maxStep = 0.05;
 Level.prototype.animate = function(step, keys) {
 	if (this.status != null) {
@@ -71,6 +72,7 @@ Level.prototype.animate = function(step, keys) {
 	}
 }
 Level.prototype.playerTouched = function(type, actor) {
+	// console.log("playerTouched " + type);
 	if (type == "lava" && this.status == null) {
 		this.status = "lost";
 		this.finishDelay = 1;
