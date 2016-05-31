@@ -41,12 +41,12 @@ Level.prototype.obstacleAt = function(pos, size) {
 	}
 	for (var y=yStart; y<yEnd; y++) {
 		for (var x=xStart; x<xEnd; x++) {
-			var fieldType = field[y][x];
+			var fieldType = this.grid[y][x];
 			if (fieldType) return fieldType;
 		}
 	}
 }
-Level.prototyp.actorAt = function(actor) {
+Level.prototype.actorAt = function(actor) {
 	for (var i=0; i<this.actors.length; i++) {
 		var other = this.actors[i];
 		if (other != actor &&
@@ -75,21 +75,24 @@ Level.prototype.playerTouched = function(type, actor) {
 		this.status = "lost";
 		this.finishDelay = 1;
 	} else if (type == "coin") {
-		this.actors = this.actors.filter(function(other)) {
+		this.actors = this.actors.filter(function(other) {
 			return other != actor;
 		});
 		if (!this.actors.some(function(actor) {
 			return actor.type == "coin";
 		})) {
 			this.status = "won";
-			this.finishDelay = !;
+			this.finishDelay = 1;
 		}
 	}
 }
+Level.prototype.isFinished = function() {
+	return this.status != null;
+}
 
-var arrowCodes = {37: "left", 38: "up", 39: "right"}
+var arrowCodes = {37: "left", 38: "up", 39: "right"};
 
-function trackKeys(codes) {
+function trackKeys(codes) {
 	var pressed = Object.create(null);
 	function handler(event) {
 		if (codes.hasOwnProperty(event.keyCode)) {
