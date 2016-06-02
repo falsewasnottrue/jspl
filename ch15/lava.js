@@ -215,17 +215,17 @@ Vector.prototype.times = function(factor) {
 	return new Vector(this.x * factor, this.y * factor);
 }
 
-var simpleLevelPlan = [
-	"                         ",
-	"                         ",
-	"  x                 =x   ",
-	"  x           o  o   x   ",
-	"  x @        xxxxxx  x   ",
-	"  xxxxxx             x   ",
-	"       x!!!!!!!!!!!!!x   ",
-	"       xxxxxxxxxxxxxxx   ",
-	"                         "	
-];
+// var simpleLevelPlan = [
+// 	"                         ",
+// 	"                         ",
+// 	"  x                 =x   ",
+// 	"  x           o  o   x   ",
+// 	"  x @        xxxxxx  x   ",
+// 	"  xxxxxx             x   ",
+// 	"       x!!!!!!!!!!!!!x   ",
+// 	"       xxxxxxxxxxxxxxx   ",
+// 	"                         "	
+// ];
 
 // drawing
 
