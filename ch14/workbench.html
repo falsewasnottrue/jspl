@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Workbench</title>
+</head>
+<body>
+	<script type="text/javascript">
+		var execute = function() {
+			var code = document.getElementById("code").value;
+			var f = new Function("", code);
+			var result = f.apply();
+
+			document.getElementById("result").value = result;
+		}
+	</script>
+	<textarea id="code" cols="80" rows="20"></textarea><br/>
+	<input type="button" id="gogogo" value="Ausf&uuml;hren" onclick="execute();"></input><br/>
+	<input type="text" disabled="true" id="result"><br/>
+</body>
+</html>
