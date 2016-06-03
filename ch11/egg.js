@@ -176,4 +176,18 @@ var text2 = "do("
 				+ "define(b, addOne(1)),"
 				+ "print(b)"
 			+ ")"
-run(text2);
+
+var text3 = "do("
+				+ "define(fib, fun(a, if(<(a,2), 1, +(fib(-(a,1)), fib(-(a,2)))))),"
+				+ "define(i,1),"
+				+ "while("
+					+ "<(i,10),"
+					+ "do("
+						+ "define(n, fib(i)),"
+						+ "print(n),"
+						+ "define(i, +(i,1))"
+					+ ")"
+				+ ")"
+			+ ")"
+
+run(text3);
