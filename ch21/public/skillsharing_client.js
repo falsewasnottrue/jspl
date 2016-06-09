@@ -54,37 +54,44 @@ function displayTalks(talks) {
 }
 
 function instantiateTemplate(name, values) {
-  function instantiateText(text) {
+  function instantiateText(text, values) {
     return text.replace(/\{\{(\w+)\}\}/g, function(_, name) {
       return values[name];
     });
   }
-  function instantiate(node) {
+  function instantiate(node, values) {
     if (node.nodeType == document.ELEMENT_NODE) {
       var copy = node.cloneNode();
-      for (var i = 0; i < node.childNodes.length; i++)
-        copy.appendChild(instantiate(node.childNodes[i]));
+
+      if (node.hasAttribute("template-repeat")) {
+        var varName = node.getAttribute("template-repeat");
+
+        if (values[varName] && Array.isArray(values[varName])) {
+          values[varName].forEach(function(element) {
+            for (var i = 0; i < node.childNodes.length; i++)
+              copy.appendChild(instantiate(node.childNodes[i], element));
+          });
+        }
+      } else {
+        for (var i = 0; i < node.childNodes.length; i++)
+          copy.appendChild(instantiate(node.childNodes[i], values));
+      }
       return copy;
     } else if (node.nodeType == document.TEXT_NODE) {
       return document.createTextNode(
-               instantiateText(node.nodeValue));
+               instantiateText(node.nodeValue, values));
     } else {
       return node;
     }
   }
 
   var template = document.querySelector("#template ." + name);
-  return instantiate(template);
+  return instantiate(template, values);
 }
 
 function drawTalk(talk) {
   var node = instantiateTemplate("talk", talk);
-  var comments = node.querySelector(".comments");
-  talk.comments.forEach(function(comment) {
-    comments.appendChild(
-      instantiateTemplate("comment", comment));
-  });
-
+  
   node.querySelector("button.del").addEventListener(
     "click", deleteTalk.bind(null, talk.title));
 
