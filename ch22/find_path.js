@@ -39,8 +39,8 @@ function treeGraph(depth, branches) {
 
 function findPath(graph, start, end) {
   function findPathRecursive(paths, i) {
-    console.log("paths: " + paths);
-    console.log("i: " + i);
+    // console.log("paths: " + paths);
+    // console.log("i: " + i);
 
     if (i + 1 > paths.length) {
       return []; // no path, maybe undefined?
@@ -51,24 +51,15 @@ function findPath(graph, start, end) {
       return path;
     }
 
-    // 1. find all nodes connected to endNode
-    var nodes = endNode.edges
-    console.log(nodes);
-
-    // 2. filter out those that are already in path
-    var newNodes = nodes.filter(function(node) {
+    endNode.edges.filter(function(node) {
       return !(path.includes(node));
-    });
-    console.log(nodes);
-
-    // 3. for each node add path+node to paths
-    newNodes.forEach(function(newNode) {
-      console.log("createNewPaths with " + newNode);
-      console.log("path: " + path);
-      console.log("path.slice(); " + path.slice());
+    }).forEach(function(newNode) {
+      // console.log("createNewPaths with " + newNode);
+      // console.log("path: " + path);
+      // console.log("path.slice(); " + path.slice());
       var newPath = path.slice();
       newPath.push(newNode);
-      console.log("newPath: " + newPath);
+      // console.log("newPath: " + newPath);
       paths.push(newPath);
     });
 
@@ -83,7 +74,22 @@ var graph = treeGraph(3,2);
 var start = graph[0];
 var end = graph[6];
 
-console.log(graph);
+// console.log(graph);
 console.log(findPath(graph, start, end));
 
-// TODO try with circle
+// circular graph
+var n0 = new GraphNode(0);
+var n1 = new GraphNode(1);
+n1.connect(n0);
+var n2 = new GraphNode(2);
+n2.connect(n1)
+var n3 = new GraphNode(3);
+n3.connect(n2);
+var n4 = new GraphNode(4);
+n4.connect(n3);
+var n5 = new GraphNode(5);
+n5.connect(n4);
+n0.connect(n5);
+
+var circle = [n0, n1, n2, n3, n4, n5];
+console.log(findPath(circle, n0, n2));
